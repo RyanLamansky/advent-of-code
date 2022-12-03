@@ -1,59 +1,27 @@
 ﻿namespace Advent.Year2022.Day01;
 
-internal static class Answer
+public sealed class Answer : IPuzzle
 {
-    public static void Solve()
+    private static IEnumerable<int> TotalOfGroups(IEnumerable<string> input)
     {
-        static IEnumerable<int[]> Input()
+        var currentTotal = -1;
+        foreach (var item in input)
         {
-            using var input = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("Advent.Year2022.Day01.input.txt");
-            using var reader = new StreamReader(input!);
-
-            var lines = new List<int>();
-
-            string? line;
-            while ((line = reader.ReadLine()) is not null)
+            if (item.Length != 0)
             {
-                if (!string.IsNullOrWhiteSpace(line))
-                {
-                    lines.Add(int.Parse(line));
-                    continue;
-                }
-
-                if (lines.Count != 0)
-                {
-                    yield return lines.ToArray();
-                    lines.Clear();
-                }
+                currentTotal += int.Parse(item);
+                continue;
             }
 
-            if (lines.Count != 0)
-                yield return lines.ToArray();
+            yield return currentTotal;
+            currentTotal = 0;
         }
 
-        static int[][] GetLines()
-        {
-            var groups = new List<int[]>();
-            foreach (var group in Input())
-            {
-                Console.WriteLine(group.Length);
-                groups.Add(group);
-            }
-            return groups.ToArray();
-        }
-
-        var lines = GetLines();
-
-        var maxes = lines.Select(o => o.Sum()).ToArray();
-
-        var maxofmaxes = maxes.Max();
-
-        Console.WriteLine($"Part 1: {maxofmaxes}");
-
-        var threeBiggestMaxes = maxes.OrderByDescending(o => o).Take(3).ToArray();
-
-        var topThreeSum = threeBiggestMaxes.Sum();
-
-        Console.WriteLine($"Part 2: {topThreeSum}");
+        if (currentTotal != -1)
+            yield return currentTotal;
     }
+
+    public long Part1(IEnumerable<string> input) => TotalOfGroups(input).Max();
+
+    public long Part2(IEnumerable<string> input) => TotalOfGroups(input).OrderByDescending(o => o).Take(3).Sum();
 }

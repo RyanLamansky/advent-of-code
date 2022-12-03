@@ -1,6 +1,6 @@
 ﻿namespace Advent.Year2022.Day03;
 
-internal static class Answer
+public sealed class Answer : IPuzzle
 {
     static int Value(char input) => input switch
     {
@@ -9,11 +9,11 @@ internal static class Answer
         _ => throw new Exception(),
     };
 
-    public static void Solve()
+    public long Part1(IEnumerable<string> input)
     {
         var totalValueOfCommon = 0;
 
-        foreach (var line in EmbeddedResource.EnumerateLines("Advent.Year2022.Day03.input.txt"))
+        foreach (var line in input)
         {
             var compartment1 = line[..(line.Length / 2)];
             var compartment2 = line[compartment1.Length..];
@@ -22,15 +22,19 @@ internal static class Answer
             totalValueOfCommon += valueOfCommon;
         }
 
-        Console.WriteLine($"Part 1: {totalValueOfCommon}");
+        return totalValueOfCommon;
+    }
 
-        totalValueOfCommon = 0;
-        foreach (var group in EmbeddedResource.EnumerateLines("Advent.Year2022.Day03.input.txt").Chunk(3))
+    public long Part2(IEnumerable<string> input)
+    {
+        var totalValueOfCommon = 0;
+
+        foreach (var group in input.Chunk(3))
         {
             var commonToAll = group[0].Intersect(group[1]).Intersect(group[2]);
             totalValueOfCommon += commonToAll.Sum(Value);
         }
 
-        Console.WriteLine($"Part 2: {totalValueOfCommon}");
+        return totalValueOfCommon;
     }
 }

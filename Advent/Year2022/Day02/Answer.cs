@@ -1,6 +1,6 @@
 ﻿namespace Advent.Year2022.Day02;
 
-internal static class Answer
+public sealed class Answer : IPuzzle
 {
     enum Choice
     {
@@ -16,101 +16,87 @@ internal static class Answer
         Win = 6,
     }
 
-    public static void Solve()
+    static IEnumerable<int> XyzIsRps(IEnumerable<string> input)
     {
-        static IEnumerable<int> XyzIsRps()
+        foreach (var line in input)
         {
-            using var input = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("Advent.Year2022.Day02.input.txt");
-            using var reader = new StreamReader(input!);
-
-            string? line;
-            while ((line = reader.ReadLine()) is not null)
+            var opponent = line[0] switch
             {
-                var opponent = line[0] switch
-                {
-                    'A' => Choice.Rock,
-                    'B' => Choice.Paper,
-                    'C' => Choice.Scissors,
-                };
+                'A' => Choice.Rock,
+                'B' => Choice.Paper,
+                'C' => Choice.Scissors,
+            };
 
-                var you = line[2] switch
-                {
-                    'X' => Choice.Rock,
-                    'Y' => Choice.Paper,
-                    'Z' => Choice.Scissors,
-                };
-
-                var outcome = opponent == you ? Outcome.Draw : opponent switch
-                {
-                    Choice.Rock => you switch
-                    {
-                        Choice.Paper => Outcome.Win,
-                        Choice.Scissors => Outcome.Loss,
-                    },
-                    Choice.Paper => you switch
-                    {
-                        Choice.Rock => Outcome.Loss,
-                        Choice.Scissors => Outcome.Win,
-                    },
-                    Choice.Scissors => you switch
-                    {
-                        Choice.Rock => Outcome.Win,
-                        Choice.Paper => Outcome.Loss,
-                    }
-                };
-
-                yield return (int)outcome + (int)you;
-            }
-        }
-
-        var total = XyzIsRps().Sum();
-
-        Console.WriteLine($"Part 1: {total}");
-
-        static IEnumerable<int> XyzIsLdw()
-        {
-            using var input = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("Advent.Year2022.Day02.input.txt");
-            using var reader = new StreamReader(input!);
-
-            string? line;
-            while ((line = reader.ReadLine()) is not null)
+            var you = line[2] switch
             {
-                var opponent = line[0] switch
-                {
-                    'A' => Choice.Rock,
-                    'B' => Choice.Paper,
-                    'C' => Choice.Scissors,
-                };
+                'X' => Choice.Rock,
+                'Y' => Choice.Paper,
+                'Z' => Choice.Scissors,
+            };
 
-                var outcome = line[2] switch
+            var outcome = opponent == you ? Outcome.Draw : opponent switch
+            {
+                Choice.Rock => you switch
                 {
-                    'X' => Outcome.Loss,
-                    'Y' => Outcome.Draw,
-                    'Z' => Outcome.Win,
-                };
-
-                var you = outcome switch
+                    Choice.Paper => Outcome.Win,
+                    Choice.Scissors => Outcome.Loss,
+                },
+                Choice.Paper => you switch
                 {
-                    Outcome.Draw => opponent,
-                    Outcome.Win => opponent switch
-                    {
-                        Choice.Rock => Choice.Paper,
-                        Choice.Paper => Choice.Scissors,
-                        Choice.Scissors => Choice.Rock,
-                    },
-                    Outcome.Loss => opponent switch
-                    {
-                        Choice.Rock => Choice.Scissors,
-                        Choice.Paper => Choice.Rock,
-                        Choice.Scissors => Choice.Paper,
-                    },
-                };
+                    Choice.Rock => Outcome.Loss,
+                    Choice.Scissors => Outcome.Win,
+                },
+                Choice.Scissors => you switch
+                {
+                    Choice.Rock => Outcome.Win,
+                    Choice.Paper => Outcome.Loss,
+                }
+            };
 
-                yield return (int)outcome + (int)you;
-            }
+            yield return (int)outcome + (int)you;
         }
-
-        Console.WriteLine($"Part 2: {XyzIsLdw().Sum()}");
-
     }
+
+    static IEnumerable<int> XyzIsLdw(IEnumerable<string> input)
+    {
+        foreach (var line in input)
+        {
+            var opponent = line[0] switch
+            {
+                'A' => Choice.Rock,
+                'B' => Choice.Paper,
+                'C' => Choice.Scissors,
+            };
+
+            var outcome = line[2] switch
+            {
+                'X' => Outcome.Loss,
+                'Y' => Outcome.Draw,
+                'Z' => Outcome.Win,
+            };
+
+            var you = outcome switch
+            {
+                Outcome.Draw => opponent,
+                Outcome.Win => opponent switch
+                {
+                    Choice.Rock => Choice.Paper,
+                    Choice.Paper => Choice.Scissors,
+                    Choice.Scissors => Choice.Rock,
+                },
+                Outcome.Loss => opponent switch
+                {
+                    Choice.Rock => Choice.Scissors,
+                    Choice.Paper => Choice.Rock,
+                    Choice.Scissors => Choice.Paper,
+                },
+            };
+
+            yield return (int)outcome + (int)you;
+        }
+    }
+
+    public long Part1(IEnumerable<string> input) => XyzIsRps(input).Sum();
+
+    public long Part2(IEnumerable<string> input) => XyzIsLdw(input).Sum();
 }

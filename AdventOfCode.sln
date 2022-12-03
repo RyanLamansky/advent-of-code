@@ -5,7 +5,12 @@ VisualStudioVersion = 17.5.33103.201
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Advent", "Advent\Advent.csproj", "{1549A3E2-0F6D-467D-A53B-2B21E350B8F7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Advent.Tests", "Advent.Tests\Advent.Tests.csproj", "{EC60C153-EB03-487E-AC0A-AAA50A1C92CA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Advent.Tests", "Advent.Tests\Advent.Tests.csproj", "{EC60C153-EB03-487E-AC0A-AAA50A1C92CA}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{BA22A618-A1AB-4AF8-82E4-4ABB755523B5}"
+	ProjectSection(SolutionItems) = preProject
+		README.md = README.md
+	EndProjectSection
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

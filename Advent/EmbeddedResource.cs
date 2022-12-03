@@ -1,7 +1,5 @@
 ﻿using System.Reflection;
 
-namespace Advent2022;
-
 internal static class EmbeddedResource
 {
     public static IEnumerable<string> EnumerateLines(string name)

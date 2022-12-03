@@ -1,4 +1,4 @@
-﻿namespace Advent2022.Day02;
+﻿namespace Advent.Year2022.Day02;
 
 internal static class Answer
 {
@@ -20,7 +20,7 @@ internal static class Answer
     {
         static IEnumerable<int> XyzIsRps()
         {
-            using var input = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("Advent2022.Day02.input.txt");
+            using var input = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("Advent.Year2022.Day02.input.txt");
             using var reader = new StreamReader(input!);
 
             string? line;
@@ -69,7 +69,7 @@ internal static class Answer
 
         static IEnumerable<int> XyzIsLdw()
         {
-            using var input = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("Advent2022.Day02.input.txt");
+            using var input = System.Reflection.Assembly.GetExecutingAssembly().GetManifestResourceStream("Advent.Year2022.Day02.input.txt");
             using var reader = new StreamReader(input!);
 
             string? line;

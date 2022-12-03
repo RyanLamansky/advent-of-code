@@ -6,6 +6,7 @@
     <Nullable>enable</Nullable>
     <RootNamespace>Advent</RootNamespace>
     <IsPackable>false</IsPackable>
+    <DebugType>embedded</DebugType>
   </PropertyGroup>
 
   <ItemGroup>

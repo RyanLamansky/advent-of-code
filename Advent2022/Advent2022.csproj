@@ -8,12 +8,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Day02\input.txt" />
-  </ItemGroup>
-
-  <ItemGroup>
     <EmbeddedResource Include="Day01\input.txt" />
     <EmbeddedResource Include="Day02\input.txt" />
+    <EmbeddedResource Include="Day03\input.txt" />
   </ItemGroup>
 
 </Project>

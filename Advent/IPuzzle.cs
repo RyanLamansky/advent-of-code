@@ -2,9 +2,9 @@
 
 public interface IPuzzle
 {
-    long Part1(IEnumerable<string> input);
+    int Part1(IEnumerable<string> input);
 
-    long Part2(IEnumerable<string> input);
+    int Part2(IEnumerable<string> input);
 
     private IEnumerable<string> EnumerateLinesFromEmbeddedStream(string name)
     {
@@ -22,11 +22,11 @@ public interface IPuzzle
     private IEnumerable<string> EnumerateLinesFromInputStream()
         => EnumerateLinesFromEmbeddedStream($"{this.GetType().Namespace}.input.txt");
 
-    public sealed long RunSamplePart1() => Part1(EnumerateLinesFromSampleStream());
+    public sealed int RunSamplePart1() => Part1(EnumerateLinesFromSampleStream());
 
-    public sealed long RunSamplePart2() => Part2(EnumerateLinesFromSampleStream());
+    public sealed int RunSamplePart2() => Part2(EnumerateLinesFromSampleStream());
 
-    public sealed long RunInputPart1() => Part1(EnumerateLinesFromInputStream());
+    public sealed int RunInputPart1() => Part1(EnumerateLinesFromInputStream());
 
-    public sealed long RunInputPart2() => Part2(EnumerateLinesFromInputStream());
+    public sealed int RunInputPart2() => Part2(EnumerateLinesFromInputStream());
 }

@@ -96,7 +96,7 @@ public sealed class Answer : IPuzzle
         }
     }
 
-    public long Part1(IEnumerable<string> input) => XyzIsRps(input).Sum();
+    public int Part1(IEnumerable<string> input) => XyzIsRps(input).Sum();
 
-    public long Part2(IEnumerable<string> input) => XyzIsLdw(input).Sum();
+    public int Part2(IEnumerable<string> input) => XyzIsLdw(input).Sum();
 }

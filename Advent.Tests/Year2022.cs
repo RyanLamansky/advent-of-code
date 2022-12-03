@@ -5,10 +5,10 @@ public class Year2022Tests
 {
     private static void TestPuzzle(
         IPuzzle puzzle,
-        long samplePart1,
-        long inputPart1,
-        long samplePart2,
-        long inputPart2,
+        int samplePart1,
+        int inputPart1,
+        int samplePart2,
+        int inputPart2,
         [System.Runtime.CompilerServices.CallerMemberName] string? callerName = null)
     {
         Assert.AreEqual(samplePart1, puzzle.RunSamplePart1(), $"{callerName}.SamplePart1 failed.");

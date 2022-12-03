@@ -21,7 +21,7 @@ public sealed class Answer : IPuzzle
             yield return currentTotal;
     }
 
-    public long Part1(IEnumerable<string> input) => TotalOfGroups(input).Max();
+    public int Part1(IEnumerable<string> input) => TotalOfGroups(input).Max();
 
-    public long Part2(IEnumerable<string> input) => TotalOfGroups(input).OrderByDescending(o => o).Take(3).Sum();
+    public int Part2(IEnumerable<string> input) => TotalOfGroups(input).OrderByDescending(o => o).Take(3).Sum();
 }

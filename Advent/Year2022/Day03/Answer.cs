@@ -9,7 +9,7 @@ public sealed class Answer : IPuzzle
         _ => throw new Exception(),
     };
 
-    public long Part1(IEnumerable<string> input)
+    public int Part1(IEnumerable<string> input)
     {
         var totalValueOfCommon = 0;
 
@@ -25,7 +25,7 @@ public sealed class Answer : IPuzzle
         return totalValueOfCommon;
     }
 
-    public long Part2(IEnumerable<string> input)
+    public int Part2(IEnumerable<string> input)
     {
         var totalValueOfCommon = 0;
 

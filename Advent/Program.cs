@@ -1,14 +1,18 @@
-﻿Console.WriteLine(((Advent.IPuzzle)new Advent.Year2022.Day01.Answer()).RunSamplePart1());
-Console.WriteLine(((Advent.IPuzzle)new Advent.Year2022.Day01.Answer()).RunInputPart1());
-Console.WriteLine(((Advent.IPuzzle)new Advent.Year2022.Day01.Answer()).RunSamplePart2());
-Console.WriteLine(((Advent.IPuzzle)new Advent.Year2022.Day01.Answer()).RunInputPart2());
-
-Console.WriteLine(((Advent.IPuzzle)new Advent.Year2022.Day02.Answer()).RunSamplePart1());
-Console.WriteLine(((Advent.IPuzzle)new Advent.Year2022.Day02.Answer()).RunInputPart1());
-Console.WriteLine(((Advent.IPuzzle)new Advent.Year2022.Day02.Answer()).RunSamplePart2());
-Console.WriteLine(((Advent.IPuzzle)new Advent.Year2022.Day02.Answer()).RunInputPart2());
-
-Console.WriteLine(((Advent.IPuzzle)new Advent.Year2022.Day03.Answer()).RunSamplePart1());
-Console.WriteLine(((Advent.IPuzzle)new Advent.Year2022.Day03.Answer()).RunInputPart1());
-Console.WriteLine(((Advent.IPuzzle)new Advent.Year2022.Day03.Answer()).RunSamplePart2());
-Console.WriteLine(((Advent.IPuzzle)new Advent.Year2022.Day03.Answer()).RunInputPart2());
+﻿foreach (var puzzle in System.Reflection.Assembly.GetExecutingAssembly()
+    .GetTypes()
+    .Where(type => type.GetInterfaces().Any(i => i == typeof(Advent.IPuzzle)))
+    .OrderBy(type => type.FullName)
+    .Select(Activator.CreateInstance)
+    .OfType<Advent.IPuzzle>())
+{
+    Console.Write(puzzle.GetType().Namespace![11..].Replace("Day", ""));
+    Console.Write(": ");
+    Console.Write(puzzle.RunSamplePart1());
+    Console.Write(", ");
+    Console.Write(puzzle.RunInputPart1());
+    Console.Write(", ");
+    Console.Write(puzzle.RunSamplePart2());
+    Console.Write(", ");
+    Console.Write(puzzle.RunInputPart2());
+    Console.WriteLine();
+}

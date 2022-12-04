@@ -23,6 +23,8 @@
     <EmbeddedResource Include="Year2022\Day02\sample.txt" />
     <EmbeddedResource Include="Year2022\Day03\input.txt" />
     <EmbeddedResource Include="Year2022\Day03\sample.txt" />
+    <EmbeddedResource Include="Year2022\Day04\input.txt" />
+    <EmbeddedResource Include="Year2022\Day04\sample.txt" />
   </ItemGroup>
 
 </Project>

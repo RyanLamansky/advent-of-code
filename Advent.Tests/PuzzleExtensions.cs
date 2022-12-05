@@ -29,4 +29,18 @@ internal static class PuzzleExtensions
         Assert.AreEqual(samplePart2, puzzle.RunSamplePart2(), $"{callerName}.SamplePart2 failed.");
         Assert.AreEqual(inputPart2, puzzle.RunInputPart2(), $"{callerName}.InputPart2 failed.");
     }
+
+    public static void Test(
+        this IPuzzleString puzzle,
+        string samplePart1,
+        string inputPart1,
+        string samplePart2,
+        string inputPart2,
+        [System.Runtime.CompilerServices.CallerMemberName] string? callerName = null)
+    {
+        Assert.AreEqual(samplePart1, puzzle.RunSamplePart1(), $"{callerName}.SamplePart1 failed.");
+        Assert.AreEqual(inputPart1, puzzle.RunInputPart1(), $"{callerName}.InputPart1 failed.");
+        Assert.AreEqual(samplePart2, puzzle.RunSamplePart2(), $"{callerName}.SamplePart2 failed.");
+        Assert.AreEqual(inputPart2, puzzle.RunInputPart2(), $"{callerName}.InputPart2 failed.");
+    }
 }

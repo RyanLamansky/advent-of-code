@@ -14,4 +14,7 @@ public class Year2022Tests
 
     [TestMethod]
     public void Day04() => new Year2022.Day04.Answer().Test(2, 485, 4, 857);
+
+    [TestMethod]
+    public void Day05() => new Year2022.Day05.Answer().Test("CMZ", "DHBJQJCCW", "MCD", "WJVRLSJJT");
 }

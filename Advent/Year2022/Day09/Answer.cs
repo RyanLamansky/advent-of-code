@@ -1,4 +1,6 @@
-﻿namespace Advent.Year2022.Day09;
+﻿using System.Collections;
+
+namespace Advent.Year2022.Day09;
 
 public sealed class Answer : IPuzzle
 {
@@ -82,8 +84,122 @@ public sealed class Answer : IPuzzle
         return tailVisited.Count;
     }
 
+    private sealed class Knot : IEnumerable<Knot>
+    {
+        public readonly Knot? Next;
+        public int X, Y;
+        public readonly HashSet<(int X, int Y)> Visited = new() { (0, 0) };
+
+        public Knot(int remainingLength)
+        {
+            if (remainingLength > 0)
+                Next = new Knot(remainingLength - 1);
+        }
+
+        public void Move(char direction)
+        {
+            switch (direction)
+            {
+                case 'U':
+                    Y--;
+                    break;
+                case 'D':
+                    Y++;
+                    break;
+                case 'L':
+                    X--;
+                    break;
+                case 'R':
+                    X++;
+                    break;
+                case '↗':
+                    X++;
+                    Y--;
+                    break;
+                case '↘':
+                    X++;
+                    Y++;
+                    break;
+                case '↙':
+                    X--;
+                    Y++;
+                    break;
+                case '↖':
+                    X--;
+                    Y--;
+                    break;
+            }
+
+            Visited.Add((X, Y));
+
+            if (Next is null)
+                return; // End of the rope
+
+            if (Math.Abs(X - Next.X) <= 1 && Math.Abs(Y - Next.Y) <= 1)
+                return; // Next segment is still touching after the move.
+
+            if (X == Next.X || Y == Next.Y)
+            {
+                // Still on the same axis.
+                if (X == Next.X)
+                {
+                    if (Y > Next.Y)
+                        Next.Move('D');
+                    else
+                        Next.Move('U');
+                }
+                else
+                {
+                    if (X > Next.X)
+                        Next.Move('R');
+                    else
+                        Next.Move('L');
+                }
+                return;
+            }
+
+            if (X > Next.X)
+            {
+                if (Y > Next.Y)
+                    Next.Move('↘');
+                else
+                    Next.Move('↗');
+            }
+            else
+            {
+                if (Y > Next.Y)
+                    Next.Move('↙');
+                else
+                    Next.Move('↖');
+            }
+        }
+
+        public IEnumerator<Knot> GetEnumerator()
+        {
+            var next = this;
+            do
+            {
+                yield return next;
+            } while ((next = next!.Next) is not null);
+        }
+
+        IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
+
+        public override string ToString() => $"{X},{Y}";
+    }
+
     public int Part2(IEnumerable<string> input)
     {
-        return 0;
+        var rope = new Knot(9);
+
+        foreach (var line in input)
+        {
+            var direction = line[0];
+
+            for (var amount = int.Parse(line.AsSpan(2)); amount > 0; amount--)
+                rope.Move(direction);
+        }
+
+        return rope.Last().Visited.Count;
     }
 }

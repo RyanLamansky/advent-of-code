@@ -1,17 +1,27 @@
 ﻿foreach (var result in System.Reflection.Assembly
     .GetExecutingAssembly()
     .GetTypes()
-    .Where(type => type.GetInterfaces().Any(i => i == typeof(Advent.IPuzzle)) && !type.IsInterface)
+    .Where(type => type.GetInterfaces().Any(i => (i == typeof(Advent.IPuzzle)) || i == typeof(Advent.IBytePuzzle)) && !type.IsInterface)
     .AsParallel()
     .OrderBy(type => type.FullName)
     .Select(Activator.CreateInstance)
-    .OfType<Advent.IPuzzle>()
     .Select(puzzle =>
     {
-        var result = new System.Text.StringBuilder(puzzle.GetType().Namespace![11..].Replace("Day", ""))
+        var result = new System.Text.StringBuilder(puzzle!.GetType().Namespace![11..].Replace("Day", ""))
             .Append(": ");
 
-        if (puzzle is Advent.IPuzzle64 puzzle64)
+        if (puzzle is Advent.IBytePuzzle bytePuzzle)
+        {
+            result
+                .Append(bytePuzzle.RunSamplePart1())
+                .Append(", ")
+                .Append(bytePuzzle.RunInputPart1())
+                .Append(", ")
+                .Append(bytePuzzle.RunSamplePart2())
+                .Append(", ")
+                .Append(bytePuzzle.RunInputPart2());
+        }
+        else if (puzzle is Advent.IPuzzle64 puzzle64)
         {
             result
                 .Append(puzzle64.RunSamplePart1())
@@ -33,16 +43,16 @@
                 .Append(", ")
                 .Append(puzzleString.RunInputPart2());
         }
-        else
+        else if (puzzle is Advent.IPuzzle puzzle32)
         {
             result
-                .Append(puzzle.RunSamplePart1())
+                .Append(puzzle32.RunSamplePart1())
                 .Append(", ")
-                .Append(puzzle.RunInputPart1())
+                .Append(puzzle32.RunInputPart1())
                 .Append(", ")
-                .Append(puzzle.RunSamplePart2())
+                .Append(puzzle32.RunSamplePart2())
                 .Append(", ")
-                .Append(puzzle.RunInputPart2());
+                .Append(puzzle32.RunInputPart2());
         }
 
         return result.ToString();

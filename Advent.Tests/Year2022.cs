@@ -77,4 +77,7 @@ public class Year2022Tests
 
     [TestMethod]
     public void Day19() => new Year2022.Day19.Answer().Test(0, 0, 0, 0);
+
+    [TestMethod]
+    public void Day20() => new Year2022.Day20.Answer().Test(0, 0, 0, 0);
 }

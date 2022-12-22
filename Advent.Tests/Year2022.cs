@@ -83,4 +83,7 @@ public class Year2022Tests
 
     [TestMethod]
     public void Day21() => new Year2022.Day21.Answer().Test(152, 276156919469632, 301, 3441198826073);
+
+    [TestMethod]
+    public void Day22() => new Year2022.Day22.Answer().Test(6032, 56372, 0, 0);
 }

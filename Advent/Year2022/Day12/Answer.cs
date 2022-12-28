@@ -1,137 +1,120 @@
 ﻿namespace Advent.Year2022.Day12;
 
-public static class TupleExtensions
-{
-    public static (byte X, byte Y) Up(this (byte X, byte Y) location) => (location.X, (byte)(location.Y - 1));
-    public static (byte X, byte Y) Down(this (byte X, byte Y) location) => (location.X, (byte)(location.Y + 1));
-    public static (byte X, byte Y) Left(this (byte X, byte Y) location) => ((byte)(location.X - 1), location.Y);
-    public static (byte X, byte Y) Right(this (byte X, byte Y) location) => ((byte)(location.X + 1), location.Y);
-}
-
 public sealed class Answer : IPuzzle
 {
-    private sealed class Map
+    private static char[,] ReadMap(IEnumerable<string> input, out (byte X, byte Y) start, out (byte X, byte Y) end)
     {
-        private readonly (byte X, byte Y) Start, End;
-        private readonly char[,] map;
+        start = default;
+        end = default;
+        var lines = input.ToArray();
 
-        public Map(IEnumerable<string> input)
+        var map = new char[lines[0].Length, lines.Length];
+
+        for (byte y = 0; y < lines.Length; y++)
         {
-            var lines = input.ToList();
-
-            var map = this.map = new char[lines[0].Length, lines.Count];
-
-            for (byte y = 0; y < lines.Count; y++)
+            var line = lines[y];
+            for (byte x = 0; x < line.Length; x++)
             {
-                var line = lines[y];
-                for (byte x = 0; x < line.Length; x++)
-                {
-                    var c = line[x];
-                    map[x, y] = c;
+                var c = line[x];
+                map[x, y] = c;
 
-                    if (c == 'S')
-                        Start = (x, y);
-                    if (c == 'E')
-                        End = (x, y);
-                }
+                if (c == 'S')
+                    start = (x, y);
+                else if (c == 'E')
+                    end = (x, y);
             }
         }
 
-        private char? this[(byte X, byte Y) location]
+        map[start.X, start.Y] = 'a';
+        map[end.X, end.Y] = 'z';
+
+        return map;
+    }
+
+    static int? LowestSteps(char[,] map, (byte X, byte Y) start, (byte X, byte Y) end)
+    {
+        var maxX = map.GetLength(0) - 1;
+        var maxY = map.GetLength(1) - 1;
+        var best = new int[maxX + 1, maxY + 1];
+
+        for (var x = 0; x <= maxX; x++)
+            for (var y = 0; y <= maxY; y++)
+                best[x, y] = int.MaxValue;
+
+        best[start.X, start.Y] = 0;
+
+        var currentQueue = new HashSet<(byte X, byte Y)> { start };
+        var nextQueue = new HashSet<(byte X, byte Y)>();
+        var step = -1;
+
+        void TryEnqueue(char height, int x, int y)
         {
-            get
-            {
-                var (x, y) = location;
+            if (x < 0 || x > maxX)
+                return;
+            if (y < 0 || y > maxY)
+                return;
 
-                if (x < 0)
-                    return null;
-                if (y < 0)
-                    return null;
-                if (x >= map.GetLength(0))
-                    return null;
-                if (y >= map.GetLength(1))
-                    return null;
+            if (best[x, y] <= step + 1)
+                return;
+            if (map[x, y] > height + 1)
+                return;
 
-                return map[x, y];
-            }
+            best[x, y] = step + 1;
+            nextQueue.Add(((byte)x, (byte)y));
         }
 
-        public readonly struct Path
+        while (true)
         {
-            public readonly (byte X, byte Y) Location;
-            public readonly (byte X, byte Y)[] Visited;
+            step++;
 
-            public Path((byte X, byte Y) location, (byte X, byte Y)[] visited)
+            foreach (var test in currentQueue)
             {
-                Location = location;
-                Visited = visited;
+                if (test == end)
+                    return step;
+
+                var (x, y) = test;
+                var height = map[x, y];
+                TryEnqueue(height, x + 1, y);
+                TryEnqueue(height, x, y + 1);
+                TryEnqueue(height, x - 1, y);
+                TryEnqueue(height, x, y - 1);
             }
 
-            public Path To((byte X, byte Y) location)
-            {
-                var array = new (byte X, byte Y)[Visited.Length + 1];
-                Array.Copy(Visited, array, Visited.Length);
-                array[array.Length - 1] = location;
+            if (nextQueue.Count == 0)
+                return null; // Not reachable from this starting point. Only happens in Part 2.
 
-                return new Path(location, array);
-            }
-
-            public override string ToString() => $"{Location}; {Visited.Length}";
-        }
-
-        public IEnumerable<Path> Paths()
-        {
-            var queue = new Queue<Path>();
-            queue.Enqueue(new Path(Start, new (byte X, byte Y)[] { Start }));
-
-            while (queue.TryDequeue(out var path))
-            {
-                var location = path.Location;
-
-                if (path.Location == End)
-                {
-                    yield return path;
-                    continue;
-                }
-
-                var visited = path.Visited;
-
-                var current = this[location]!.Value;
-
-                var step = location.Up();
-                var charAt = this[step];
-                if (charAt is not null && (current == 'S' || (charAt == 'E' && current == 'z') || Math.Abs(current - charAt.Value) <= 1) && !visited.Contains(step))
-                    queue.Enqueue(path.To(step));
-
-                step = location.Down();
-                charAt = this[step];
-                if (charAt is not null && (current == 'S' || (charAt == 'E' && current == 'z') || Math.Abs(current - charAt.Value) <= 1) && !visited.Contains(step))
-                    queue.Enqueue(path.To(step));
-
-                step = location.Left();
-                charAt = this[step];
-                if (charAt is not null && (current == 'S' || (charAt == 'E' && current == 'z') || Math.Abs(current - charAt.Value) <= 1) && !visited.Contains(step))
-                    queue.Enqueue(path.To(step));
-
-                step = location.Right();
-                charAt = this[step];
-                if (charAt is not null && (current == 'S' || (charAt == 'E' && current == 'z') || Math.Abs(current - charAt.Value) <= 1) && !visited.Contains(step))
-                    queue.Enqueue(path.To(step));
-            }
+            (nextQueue, currentQueue) = (currentQueue, nextQueue);
+            nextQueue.Clear();
         }
     }
 
     public int Part1(IEnumerable<string> input)
     {
-        var map = new Map(input);
+        var map = ReadMap(input, out var start, out var end);
 
-        return 0;
+        return LowestSteps(map, start, end).GetValueOrDefault();
     }
 
     public int Part2(IEnumerable<string> input)
     {
-        var map = new Map(input);
+        var map = ReadMap(input, out var start, out var end);
 
-        return 0;
+        var results = new List<int>();
+
+        for (byte x = 0; x < map.GetLength(0); x++)
+        {
+            for (byte y = 0; y < map.GetLength(1); y++)
+            {
+                if (map[x, y] == 'a')
+                {
+                    // This can be sped up by sharing the best grid with subsequent runs for much earlier bailouts.
+                    var steps = LowestSteps(map, (x, y), end);
+                    if (steps is not null)
+                        results.Add(steps.Value);
+                }
+            }
+        }
+
+        return results.Min();
     }
 }

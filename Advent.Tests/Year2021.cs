@@ -28,5 +28,8 @@ public class Year2021Tests
     public void Day08() => new Year2021.Day08.Answer().Test(26, 392, 61229, 1004688);
 
     [TestMethod]
-    public void Day09() => new Year2021.Day09.Answer().Test(15, 580, 0, 0);
+    public void Day09() => new Year2021.Day09.Answer().Test(15, 580, 1134, 856716);
+
+    [TestMethod]
+    public void Day10() => new Year2021.Day10.Answer().Test(26397, 388713, 288957, 3539961434);
 }

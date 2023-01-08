@@ -53,63 +53,6 @@ public sealed class Answer : IPuzzle<int>
                  && value < this[x - 1, y] && value < this[x + 1, y]
                  && value < this[x, y + 1];
         }
-
-        public int BasinSize(int x, int y)
-        {
-            var bottom = this[x, y];
-            var toCheck = new Dictionary<(int X, int Y), byte> { { (x, y), bottom } };
-            var done = new HashSet<(int X, int Y)> { (x, y) };
-            var size = 1;
-
-            do
-            {
-                var kv = toCheck.First();
-                var target = kv.Key;
-                var minimum = kv.Value;
-
-
-                var candidate = (target.X, Y: target.Y - 1);
-                var value = this[candidate.X, candidate.Y];
-                if (value > minimum && value < 10)
-                {
-                    size++;
-                    if (value < 9)
-                        toCheck[candidate] = value;
-                }
-
-                candidate = (target.X, target.Y + 1);
-                value = this[candidate.X, candidate.Y];
-                if (value > minimum && value < 10)
-                {
-                    size++;
-                    if (value < 9)
-                        toCheck[candidate] = value;
-                }
-
-                candidate = (target.X - 1, target.Y);
-                value = this[candidate.X, candidate.Y];
-                if (value > minimum && value < 10)
-                {
-                    size++;
-                    if (value < 9)
-                        toCheck[candidate] = value;
-                }
-
-                candidate = (target.X + 1, target.Y);
-                value = this[candidate.X, candidate.Y];
-                if (value > minimum && value < 10)
-                {
-                    size++;
-                    if (value < 9)
-                        toCheck[candidate] = value;
-                }
-
-                done.Add(target);
-                toCheck.Remove(kv.Key);
-            } while (toCheck.Count > 0);
-
-            return size;
-        }
     }
 
     public int Part1(IEnumerable<string> input)
@@ -119,5 +62,50 @@ public sealed class Answer : IPuzzle<int>
         return map.Where(xy => map.IsLowPointOfLocation(xy.X, xy.Y)).Sum(xy => map[xy.X, xy.Y] + 1);
     }
 
-    public int Part2(IEnumerable<string> input) => 0;
+    public int Part2(IEnumerable<string> input)
+    {
+        var map = new HeightMap(input);
+
+        var used = new HashSet<(int X, int Y)>();
+        
+        var queue = new HashSet<(int X, int Y)>();
+        var nextQueue = new HashSet<(int X, int Y)>();
+        var sizes = new List<int>();
+
+        foreach (var (x, y) in map)
+        {
+            if (!used.Add((x, y)) || map[x, y] >= 9)
+                continue;
+
+            var current = 1;
+            queue.Add((x, y));
+
+            do
+            {
+                void TryEnqueue(int x, int y)
+                {
+                    if (map[x, y] < 9 && used.Add((x, y)))
+                    {
+                        current++;
+                        nextQueue.Add((x, y));
+                    }
+                }
+
+                foreach (var (cx, cy) in queue)
+                {
+                    TryEnqueue(cx - 1, cy);
+                    TryEnqueue(cx + 1, cy);
+                    TryEnqueue(cx, cy - 1);
+                    TryEnqueue(cx, cy + 1);
+                };
+
+                (nextQueue, queue) = (queue, nextQueue);
+                nextQueue.Clear();
+            } while (queue.Count != 0);
+
+            sizes.Add(current);
+        }
+
+        return sizes.OrderDescending().Take(3).Aggregate(1, (current, value) => current * value);
+    }
 }

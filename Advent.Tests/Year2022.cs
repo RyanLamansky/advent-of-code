@@ -92,4 +92,8 @@ public class Year2022Tests
 
     [TestMethod]
     public void Day24() => new Year2022.Day24.Answer().Test(18, 332, 54, 942);
+
+    [TestMethod]
+    public void Day25() => new Year2022.Day25.Answer().Test("2=-1=0", "122-0==-=211==-2-200", "0", "0");
+
 }

@@ -1,6 +1,6 @@
 ﻿namespace Advent.Year2022.Day23;
 
-public sealed class Answer : IPuzzle
+public sealed class Answer : IPuzzle<int>
 {
     sealed class Elf
     {

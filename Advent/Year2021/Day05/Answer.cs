@@ -2,7 +2,7 @@
 
 namespace Advent.Year2021.Day05;
 
-public sealed class Answer : IPuzzle
+public sealed class Answer : IPuzzle<int>
 {
     private readonly struct Point : IEquatable<Point>
     {

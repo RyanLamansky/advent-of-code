@@ -1,8 +1,6 @@
-﻿using System.Drawing;
+﻿namespace Advent.Year2022.Day06;
 
-namespace Advent.Year2022.Day06;
-
-public sealed class Answer : IPuzzle
+public sealed class Answer : IPuzzle<int>
 {
     private static bool IsDistinct(ReadOnlySpan<char> chars)
     {

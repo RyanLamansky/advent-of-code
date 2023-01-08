@@ -1,6 +1,6 @@
 ﻿namespace Advent.Year2021.Day08;
 
-public sealed class Answer : IPuzzle
+public sealed class Answer : IPuzzle<int>
 {
     public int Part1(IEnumerable<string> input) => input
         .SelectMany(line => line.Split(" | ")[1].Split(' '))

@@ -2,7 +2,7 @@
 
 namespace Advent.Year2022.Day24;
 
-public sealed class Answer : IPuzzle
+public sealed class Answer : IPuzzle<int>
 {
     enum Direction : byte
     {

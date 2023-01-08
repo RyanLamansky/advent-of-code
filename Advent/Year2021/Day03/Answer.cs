@@ -1,6 +1,6 @@
 ﻿namespace Advent.Year2021.Day03;
 
-public sealed class Answer : IPuzzle
+public sealed class Answer : IPuzzle<int>
 {
     public int Part1(IEnumerable<string> input)
     {

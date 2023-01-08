@@ -1,6 +1,6 @@
 ﻿namespace Advent.Year2022.Day01;
 
-public sealed class Answer : IPuzzle
+public sealed class Answer : IPuzzle<int>
 {
     private static IEnumerable<int> TotalOfGroups(IEnumerable<string> input)
     {

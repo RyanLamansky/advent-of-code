@@ -1,6 +1,6 @@
 ﻿namespace Advent.Year2022.Day12;
 
-public sealed class Answer : IPuzzle
+public sealed class Answer : IPuzzle<int>
 {
     private static char[,] ReadMap(IEnumerable<string> input, out (byte X, byte Y) start, out (byte X, byte Y) end)
     {

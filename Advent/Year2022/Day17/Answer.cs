@@ -1,6 +1,6 @@
 ﻿namespace Advent.Year2022.Day17;
 
-public sealed class Answer : IPuzzle64
+public sealed class Answer : IPuzzle<long>
 {
     private readonly struct Row
     {

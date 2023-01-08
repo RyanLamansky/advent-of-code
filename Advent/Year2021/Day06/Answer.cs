@@ -1,6 +1,6 @@
 ﻿namespace Advent.Year2021.Day06;
 
-public sealed class Answer : IPuzzle64
+public sealed class Answer : IPuzzle<long>
 {
     static long Calculate(IEnumerable<string> input, int days)
     {

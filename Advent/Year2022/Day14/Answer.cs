@@ -1,6 +1,6 @@
 ﻿namespace Advent.Year2022.Day14;
 
-public sealed class Answer : IPuzzle
+public sealed class Answer : IPuzzle<int>
 {
     private readonly struct XY
     {

@@ -1,6 +1,6 @@
 ﻿namespace Advent.Year2022.Day20;
 
-public sealed class Answer : IPuzzle64
+public sealed class Answer : IPuzzle<long>
 {
     sealed class Number
     {

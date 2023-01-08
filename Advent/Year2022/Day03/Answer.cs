@@ -1,6 +1,6 @@
 ﻿namespace Advent.Year2022.Day03;
 
-public sealed class Answer : IPuzzle
+public sealed class Answer : IPuzzle<int>
 {
     static int Value(char input) => input switch
     {

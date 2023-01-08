@@ -2,7 +2,7 @@
 
 namespace Advent.Year2021.Day09;
 
-public sealed class Answer : IPuzzle
+public sealed class Answer : IPuzzle<int>
 {
     private readonly struct HeightMap : IEnumerable<(int X, int Y)>
     {

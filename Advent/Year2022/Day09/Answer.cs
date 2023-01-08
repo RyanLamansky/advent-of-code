@@ -2,7 +2,7 @@
 
 namespace Advent.Year2022.Day09;
 
-public sealed class Answer : IPuzzle
+public sealed class Answer : IPuzzle<int>
 {
     static void Move(char direction, ref (int X, int Y) item)
     {

@@ -156,7 +156,7 @@ static class Extensions
 #pragma warning restore
 }
 
-public sealed class Answer : IPuzzle
+public sealed class Answer : IPuzzle<int>
 {
     private static IEnumerable<(int Turn, int Distance)> ReadMovement(IEnumerable<char> commands)
     {

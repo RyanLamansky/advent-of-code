@@ -2,7 +2,7 @@
 
 namespace Advent.Year2022.Day10;
 
-public sealed class Answer : IPuzzleString
+public sealed class Answer : IPuzzle<string>
 {
     public string Part1(IEnumerable<string> input)
     {

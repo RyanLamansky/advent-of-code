@@ -25,6 +25,7 @@ public sealed class Answer : IPuzzle
                 'A' => Choice.Rock,
                 'B' => Choice.Paper,
                 'C' => Choice.Scissors,
+                _ => throw new Exception()
             };
 
             var you = line[2] switch
@@ -32,6 +33,7 @@ public sealed class Answer : IPuzzle
                 'X' => Choice.Rock,
                 'Y' => Choice.Paper,
                 'Z' => Choice.Scissors,
+                _ => throw new Exception()
             };
 
             var outcome = opponent == you ? Outcome.Draw : opponent switch
@@ -40,17 +42,21 @@ public sealed class Answer : IPuzzle
                 {
                     Choice.Paper => Outcome.Win,
                     Choice.Scissors => Outcome.Loss,
+                    _ => throw new Exception()
                 },
                 Choice.Paper => you switch
                 {
                     Choice.Rock => Outcome.Loss,
                     Choice.Scissors => Outcome.Win,
+                    _ => throw new Exception()
                 },
                 Choice.Scissors => you switch
                 {
                     Choice.Rock => Outcome.Win,
                     Choice.Paper => Outcome.Loss,
-                }
+                    _ => throw new Exception()
+                },
+                _ => throw new Exception()
             };
 
             yield return (int)outcome + (int)you;
@@ -66,6 +72,7 @@ public sealed class Answer : IPuzzle
                 'A' => Choice.Rock,
                 'B' => Choice.Paper,
                 'C' => Choice.Scissors,
+                _ => throw new Exception()
             };
 
             var outcome = line[2] switch
@@ -73,6 +80,7 @@ public sealed class Answer : IPuzzle
                 'X' => Outcome.Loss,
                 'Y' => Outcome.Draw,
                 'Z' => Outcome.Win,
+                _ => throw new Exception()
             };
 
             var you = outcome switch
@@ -83,13 +91,16 @@ public sealed class Answer : IPuzzle
                     Choice.Rock => Choice.Paper,
                     Choice.Paper => Choice.Scissors,
                     Choice.Scissors => Choice.Rock,
+                    _ => throw new Exception()
                 },
                 Outcome.Loss => opponent switch
                 {
                     Choice.Rock => Choice.Scissors,
                     Choice.Paper => Choice.Rock,
                     Choice.Scissors => Choice.Paper,
+                    _ => throw new Exception()
                 },
+                _ => throw new Exception()
             };
 
             yield return (int)outcome + (int)you;

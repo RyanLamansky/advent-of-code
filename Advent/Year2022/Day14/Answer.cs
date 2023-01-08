@@ -34,7 +34,7 @@ public sealed class Answer : IPuzzle
         }
     }
 
-    private readonly struct Cell
+    private readonly struct Cell : IEquatable<Cell>
     {
         private enum State : byte
         {
@@ -74,6 +74,12 @@ public sealed class Answer : IPuzzle
         public static bool operator ==(Cell cell, char value) => cell.ToChar() == value;
 
         public static bool operator !=(Cell cell, char value) => cell.ToChar() != value;
+
+        public override bool Equals(object? obj) => obj is Cell cell && Equals(cell);
+
+        public override int GetHashCode() => state.GetHashCode();
+
+        public bool Equals(Cell other) => state == other.state;
     }
 
     private sealed class Cave

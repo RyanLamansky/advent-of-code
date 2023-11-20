@@ -35,4 +35,7 @@ public class Year2021Tests
 
     [TestMethod]
     public void Day11() => new Year2021.Day11.Answer().Test(1656, 1757, 195, 422);
+
+    [TestMethod]
+    public void Day12() => new Year2021.Day12.Answer().Test(10, 4495, 36, 131254);
 }

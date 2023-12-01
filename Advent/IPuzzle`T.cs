@@ -8,7 +8,10 @@ public interface IPuzzle<T> : IPuzzle
 
     public sealed T RunSamplePart1() => Part1(new Input($"{GetType().Namespace}.sample.txt").ReadLines());
 
-    public sealed T RunSamplePart2() => Part2(new Input($"{GetType().Namespace}.sample.txt").ReadLines());
+    public sealed T RunSamplePart2() => Part2(new Input(
+        $"{GetType().Namespace}.sample2.txt",
+        $"{GetType().Namespace}.sample.txt").ReadLines()
+        );
 
     public sealed T RunInputPart1() => Part1(new Input($"{GetType().Namespace}.input.txt").ReadLines());
 
@@ -17,8 +20,8 @@ public interface IPuzzle<T> : IPuzzle
     IEnumerable<object?> IPuzzle.Solve()
     {
         yield return RunSamplePart1();
-        yield return RunSamplePart2();
         yield return RunInputPart1();
+        yield return RunSamplePart2();
         yield return RunInputPart2();
     }
 }

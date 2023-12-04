@@ -11,4 +11,7 @@ public class Year2023Tests
 
     [TestMethod]
     public void Day03() => new Year2023.Day03.Answer().Test(4361, 530849, 467835, 84900879);
+
+    [TestMethod]
+    public void Day04() => new Year2023.Day04.Answer().Test(13, 26426, 30, 6227972);
 }

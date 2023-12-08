@@ -171,7 +171,7 @@ public sealed class Answer : IPuzzle<int>
 
         static HandType ComputeType(params CardWithJoker[] cards)
         {
-            var jacks = cards.Count(card => card.Value == 'J');
+            var jokers = cards.Count(card => card.Value == 'J');
             var counts = cards
                 .Where(card => card.Value != 'J')
                 .GroupBy(card => card)
@@ -182,7 +182,7 @@ public sealed class Answer : IPuzzle<int>
             if (counts.Length <= 1)
                 return HandType.FiveOfAKind;
 
-            counts[0] += jacks;
+            counts[0] += jokers;
 
             if (counts[0] == 4)
                 return HandType.FourOfAKind;

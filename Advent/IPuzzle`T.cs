@@ -25,3 +25,16 @@ public interface IPuzzle<T> : IPuzzle
         yield return RunInputPart2();
     }
 }
+
+public interface IPuzzle<TParsed, TResult> : IPuzzle<TResult>
+{
+    TParsed Parse(IEnumerable<string> input);
+
+    TResult Part1(TParsed parsed);
+
+    TResult Part2(TParsed parsed);
+
+    TResult IPuzzle<TResult>.Part1(IEnumerable<string> input) => Part1(Parse(input));
+
+    TResult IPuzzle<TResult>.Part2(IEnumerable<string> input) => Part2(Parse(input));
+}

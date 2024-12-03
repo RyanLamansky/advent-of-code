@@ -8,4 +8,7 @@ public class Year2024Tests
 
     [TestMethod]
     public void Day02() => new Year2024.Day02.Answer().Test(2, 411, 4, 465);
+
+    [TestMethod]
+    public void Day03() => new Year2024.Day03.Answer().Test(161, 173731097, 48, 93729253);
 }

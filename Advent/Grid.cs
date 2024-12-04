@@ -6,9 +6,13 @@ namespace Advent;
 /// Simplifies work involving a 2-dimensional grid, internally wrapping a 2-dimensional array.
 /// </summary>
 /// <typeparam name="T">The type of the grid's elements.</typeparam>
-readonly struct Grid<T> : IEnumerable<(int X, int Y, T Value)> where T : notnull
+public readonly struct Grid<T> : IEnumerable<(int X, int Y, T Value)> where T : notnull
 {
     readonly T[,] values;
+
+    public int Width => values.GetLength(0);
+
+    public int Height => values.GetLength(1);
 
     /// <summary>
     /// Creates a new <see cref="Grid{T}"/> from the provided input, converted using the provided parser.

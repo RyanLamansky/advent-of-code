@@ -84,6 +84,10 @@ public readonly struct Grid<T> : IEnumerable<(int X, int Y, T Value)> where T : 
         return true;
     }
 
+    public bool IsValidLocation((int x, int y) location) => IsValidLocation(location.x, location.y);
+
+    public bool IsValidLocation(int x, int y) => x >= 0 && y >= 0 && x < values.GetLength(0) && y < values.GetLength(1);
+
     /// <summary>
     /// Gets or sets the value at the provided location within the grid.
     /// </summary>

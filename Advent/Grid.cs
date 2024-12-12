@@ -53,7 +53,7 @@ public readonly struct Grid<T> : IEnumerable<(int X, int Y, T Value)> where T : 
     /// Returns the value at the indicated location or <paramref name="outOfRange"/> if not within the grid.
     /// </summary>
     /// <param name="location">The x/y coordinates.</param>
-    /// <param name="outOfRange">The value to return when <paramref name="x"/> or <paramref name="y"/> are outside of the grid.</param>
+    /// <param name="outOfRange">The value to return when <paramref name="location"/> is outside of the grid.</param>
     /// <returns>The value at the location or <paramref name="outOfRange"/> if out of range.</returns>
     public T GetOrDefault((int x, int y) location, T outOfRange)
         => GetOrDefault(location.x, location.y, outOfRange);

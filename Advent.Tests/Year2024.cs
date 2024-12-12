@@ -35,4 +35,7 @@ public class Year2024Tests
 
     [TestMethod]
     public void Day11() => new Year2024.Day11.Answer().Test(55312, 186996, 0, 0);
+
+    [TestMethod]
+    public void Day12() => new Year2024.Day12.Answer().Test(1930, 1549354, 0, 0);
 }

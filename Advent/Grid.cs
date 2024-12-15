@@ -193,3 +193,9 @@ public readonly struct Grid<T> : IEnumerable<(int X, int Y, T Value)> where T : 
         }
     }
 }
+
+public static class GridExtensions
+{
+    public static void Write(this Grid<char> grid)
+        => grid.Write(Console.Write, Console.WriteLine);
+}

@@ -3,11 +3,22 @@ using System.Diagnostics;
 
 namespace Advent;
 
+public static class Grid
+{
+    /// <summary>
+    /// Creates a <see cref="Grid{T}"/> of type <see cref="char"/> from the provided input.
+    /// </summary>
+    /// <param name="lines">A sequence of lines of equal length representing the grid.</param>
+    /// <returns>A grid representation of the lines.</returns>
+    public static Grid<char> From(IEnumerable<string> lines)
+        => new(lines, c => c);
+}
+
 /// <summary>
 /// Simplifies work involving a 2-dimensional grid, internally wrapping a 2-dimensional array.
 /// </summary>
 /// <typeparam name="T">The type of the grid's elements.</typeparam>
-[DebuggerDisplay("Grid {Width}/{Height}")]
+[DebuggerDisplay("Grid {Width}×{Height}")]
 public readonly struct Grid<T> : IEnumerable<(int X, int Y, T Value)> where T : notnull, IEquatable<T>
 {
     readonly T[,] values;
@@ -152,6 +163,13 @@ public readonly struct Grid<T> : IEnumerable<(int X, int Y, T Value)> where T : 
         }
     }
 
+    /// <summary>
+    /// Searches the grid in row by row, left-to-right for a specific value.
+    /// The location of the first match is returned.
+    /// </summary>
+    /// <param name="value">The value to find.</param>
+    /// <returns>The first location of <paramref name="value"/>.</returns>
+    /// <exception cref="Exception">Value <paramref name="value"/> not found.</exception>
     public (int X, int Y) Find(T value)
     {
         foreach (var (x, y, v) in this)
@@ -163,6 +181,10 @@ public readonly struct Grid<T> : IEnumerable<(int X, int Y, T Value)> where T : 
         throw new Exception($"Value {value} not found.");
     }
 
+    /// <summary>
+    /// Returns a new grid of the same type containing all the values of this instance.
+    /// </summary>
+    /// <returns>The new grid.</returns>
     public Grid<T> Clone() => new((T[,])values.Clone());
 
     /// <summary>
@@ -196,6 +218,10 @@ public readonly struct Grid<T> : IEnumerable<(int X, int Y, T Value)> where T : 
 
 public static class GridExtensions
 {
+    /// <summary>
+    /// Writes the entire grid to the <see cref="Console"/>.
+    /// </summary>
+    /// <param name="grid">The grid to write.</param>
     public static void Write(this Grid<char> grid)
         => grid.Write(Console.Write, Console.WriteLine);
 }

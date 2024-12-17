@@ -50,4 +50,7 @@ public class Year2024Tests
 
     [TestMethod]
     public void Day16() => new Year2024.Day16.Answer().Test(7036, 99460, 0, 0);
+
+    [TestMethod]
+    public void Day17() => new Year2024.Day17.Answer().Test("4,6,3,5,6,3,5,2,1,0", "2,7,4,7,2,1,7,5,1", "117440", "?");
 }

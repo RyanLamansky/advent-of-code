@@ -1,5 +1,6 @@
 ﻿namespace Advent.Year2024.Day17;
 
+using System.Diagnostics;
 using Parsed = (uint A, uint B, uint C, byte[] Program);
 using Result = string;
 
@@ -90,32 +91,77 @@ public sealed class Answer : IPuzzle<Parsed, Result>
     {
         var program = parsed.Program;
 
-        var timer = System.Diagnostics.Stopwatch.StartNew();
-
-        var result = new byte[program.Length];
-
         // This returns the correct answer of 117440 for sample2.txt.
-        // It looks like 64-bit and more optimization is required for input.txt
+        // At the time of writing, it checks 20 million values per second on 7800X3D.
+        // It's not fast enough to fully evaluate the full range of possibilities.
+        // Brute force is definitely the wrong way to solve this.
 
         if (parsed.A != 2024) //sample2.txt's "A" value.
             return "?";
 
-        var registers = new uint[8];
+        Span<ulong> registers = stackalloc ulong[8];
+        registers[0] = 0;
+        registers[1] = 1;
+        registers[2] = 2;
+        registers[3] = 3;
 
-        for (uint a = 0; a < uint.MaxValue; a++)
+        var start = Stopwatch.GetTimestamp();
+        var outputInterval = Stopwatch.Frequency * 5;
+        var next = start + outputInterval;
+
+        for (ulong a = 0; a < ulong.MaxValue; a++)
         {
-            if (timer.Elapsed.TotalSeconds > 5)
+            if (Stopwatch.GetTimestamp() > next)
             {
-                Console.WriteLine(a);
-                timer.Restart();
+                Console.WriteLine(a.ToString("#,##0"));
+                start = Stopwatch.GetTimestamp();
+                next = start + outputInterval;
             }
 
             var index = 0;
-            foreach (var value in RunProgram(program, registers, a))
+
+            registers[4] = a;
+            registers[5] = 0;
+            registers[6] = 0;
+
+            for (var i = 0; i + 1 < program.Length; i += 2)
             {
-                if (program[index++] != value)
-                    goto Nope;
-            };
+                var opCode = (OpCode)program[i];
+                var operand = program[i + 1];
+
+                switch (opCode)
+                {
+                    case OpCode.adv:
+                        registers[4] = registers[4] / (ulong)Math.Pow(2, registers[operand]);
+                        continue;
+                    case OpCode.bxl:
+                        registers[5] = registers[5] ^ operand;
+                        continue;
+                    case OpCode.bst:
+                        registers[5] = registers[operand] % 8;
+                        continue;
+                    case OpCode.jnz:
+                        if (registers[4] == 0)
+                            continue;
+
+                        i = operand - 2;
+                        continue;
+                    case OpCode.bxc:
+                        registers[5] = registers[5] ^ registers[6];
+                        continue;
+                    case OpCode.@out:
+                        if (program[index++] != ((byte)(registers[operand] % 8)))
+                            goto Nope;
+
+                        continue;
+                    case OpCode.bdv:
+                        registers[5] = registers[4] / (ulong)Math.Pow(2, registers[operand]);
+                        continue;
+                    case OpCode.cdv:
+                        registers[6] = registers[4] / (ulong)Math.Pow(2, registers[operand]);
+                        continue;
+                }
+            }
 
             if (index == program.Length)
                 return a.ToString();

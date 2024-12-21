@@ -2,28 +2,44 @@
 
 readonly struct Input
 {
+    static readonly string BasePath;
+
+    static Input()
+    {
+        var directory = new DirectoryInfo(Environment.CurrentDirectory);
+        DirectoryInfo[] matches;
+        while ((matches = directory.GetDirectories("Advent")).Length == 0)
+            directory = directory.Parent ?? throw new Exception($"Advent directory not found.");
+
+        var advent = matches[0].Parent!;
+        BasePath = advent.FullName;
+    }
+
     readonly byte[] raw;
 
     public Input(string name)
     {
-        using var stream = GetType().Assembly.GetManifestResourceStream(name)
-            ?? throw new Exception($"{name} not found.");
-
-        var raw = this.raw = new byte[stream.Length];
-
-        stream.ReadExactly(raw.AsSpan());
+        raw = File.ReadAllBytes(Path.Combine(BasePath, name));
     }
 
     public Input(string name, string fallbackName)
     {
-        var assembly = GetType().Assembly;
-        using var stream = assembly.GetManifestResourceStream(name)
-            ?? assembly.GetManifestResourceStream(fallbackName)
-            ?? throw new Exception($"{name} and {fallbackName} not found.");
+        var filePath = Path.Combine(BasePath, name);
 
-        var raw = this.raw = new byte[stream.Length];
+        if (File.Exists(filePath))
+        {
+            this.raw = File.ReadAllBytes(filePath);
+            return;
+        }
 
-        stream.ReadExactly(raw.AsSpan());
+        filePath = Path.Combine(BasePath, fallbackName);
+        if (File.Exists(filePath))
+        {
+            this.raw = File.ReadAllBytes(filePath);
+            return;
+        }
+
+        throw new Exception($"{name} and {fallbackName} not found.");
     }
 
     public IEnumerable<string> ReadLines()

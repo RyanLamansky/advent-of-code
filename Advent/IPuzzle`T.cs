@@ -6,16 +6,16 @@ public interface IPuzzle<T> : IPuzzle
 
     T Part2(IEnumerable<string> input);
 
-    public sealed T RunSamplePart1() => Part1(new Input($"{GetType().Namespace}.sample.txt").ReadLines());
+    public sealed T RunSamplePart1() => Part1(new Input($"{GetType().Namespace!.Replace('.', '/')}/sample.txt").ReadLines());
 
     public sealed T RunSamplePart2() => Part2(new Input(
-        $"{GetType().Namespace}.sample2.txt",
-        $"{GetType().Namespace}.sample.txt").ReadLines()
+        $"{GetType().Namespace!.Replace('.', '/')}/sample2.txt",
+        $"{GetType().Namespace!.Replace('.', '/')}/sample.txt").ReadLines()
         );
 
-    public sealed T RunInputPart1() => Part1(new Input($"{GetType().Namespace}.input.txt").ReadLines());
+    public sealed T RunInputPart1() => Part1(new Input($"{GetType().Namespace!.Replace('.', '/')}/input.txt").ReadLines());
 
-    public sealed T RunInputPart2() => Part2(new Input($"{GetType().Namespace}.input.txt").ReadLines());
+    public sealed T RunInputPart2() => Part2(new Input($"{GetType().Namespace!.Replace('.', '/')}/input.txt").ReadLines());
 
     IEnumerable<object?> IPuzzle.Solve()
     {

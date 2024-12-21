@@ -9,11 +9,5 @@
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <NoWarn>1591</NoWarn>
   </PropertyGroup>
-  
-  <ItemGroup>
-    <EmbeddedResource Include="**/input.txt" />
-    <EmbeddedResource Include="**/sample.txt" />
-    <EmbeddedResource Include="**/sample2.txt" />
-  </ItemGroup>
 
 </Project>
